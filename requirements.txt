@@ -1,0 +1,6 @@
+numpy
+networkx
+pyyaml
+pytz
+matplotlib
+tensorflow==1.13.1
