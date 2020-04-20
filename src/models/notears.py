@@ -49,8 +49,7 @@ class NoTears(object):
         self.lr = tf.placeholder(self.tf_float_type)
 
         self.X = tf.placeholder(self.tf_float_type, shape=[self.n, self.d])
-        W = tf.Variable(tf.random.uniform([self.d, self.d], minval=-0.1,maxval=0.1,
-                                          dtype=self.tf_float_type, seed=self.seed))
+        W = tf.Variable(tf.zeros([self.d, self.d], self.tf_float_type))
 
         self.W_prime = self._preprocess_graph(W)
         self.mse_loss = self._get_mse_loss(self.X, self.W_prime)
