@@ -86,7 +86,7 @@ def get_args():
 
     parser.add_argument('--iter_step',
                         type=int,
-                        default=3000,
+                        default=1000,
                         help='Number of steps for each iteration')
 
     parser.add_argument('--init_iter',
