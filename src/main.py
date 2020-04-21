@@ -35,7 +35,7 @@ def main():
                                args.noise_scale, args.dataset_type)
     _logger.info('Finished generating dataset')
 
-    model = NoTears(args.n, args.d, args.seed, args.l1_graph_penalty, args.use_float64)
+    model = NoTears(args.use_gpu, args.n, args.d, args.seed, args.l1_graph_penalty, args.use_float64)
     model.print_summary(print_func=model.logger.info)
 
     trainer = ALTrainer(args.init_rho, args.rho_thres, args.h_thres, args.rho_multiply,

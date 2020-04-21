@@ -21,6 +21,11 @@ def get_args():
     parser = argparse.ArgumentParser()
 
     ##### General settings #####
+    parser.add_argument('--use_gpu',
+                        type=bool,
+                        default=False,
+                        help='Whether or not to use GPU')
+
     parser.add_argument('--seed',
                         type=int,
                         default=1230,

@@ -10,9 +10,10 @@ from helpers.tf_utils import is_cuda_available, print_summary
 class NoTears(object):
     _logger = logging.getLogger(__name__)
 
-    def __init__(self, n, d, seed=8, l1_graph_penalty=0, use_float64=False):
+    def __init__(self, use_gpu, n, d, seed=8, l1_graph_penalty=0, use_float64=False):
         self.print_summary = print_summary    # Print summary for tensorflow variables
 
+        self.use_gpu = use_gpu
         self.n = n
         self.d = d
         self.seed = seed
@@ -27,7 +28,7 @@ class NoTears(object):
         self._init_saver()
 
     def _init_session(self):
-        if is_cuda_available():
+        if self.use_gpu:
             # Use GPU
             self.sess = tf.Session(config=tf.ConfigProto(
                 gpu_options=tf.GPUOptions(
