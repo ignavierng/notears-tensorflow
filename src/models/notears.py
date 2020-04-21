@@ -1,10 +1,8 @@
 import logging
-import numpy as np
 import tensorflow as tf
-from tensorflow.keras.layers import Dense, LeakyReLU
 
 from helpers.dir_utils import create_dir
-from helpers.tf_utils import is_cuda_available, print_summary
+from helpers.tf_utils import print_summary
 
 
 class NoTears(object):

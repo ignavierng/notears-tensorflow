@@ -2,7 +2,6 @@ import logging
 from pytz import timezone
 from datetime import datetime
 import numpy as np
-import networkx as nx
 
 from data_loader import SyntheticDataset
 from models import NoTears
