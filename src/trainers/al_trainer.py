@@ -21,7 +21,7 @@ class ALTrainer(object):
         self.learning_rate = learning_rate
         self.h_tol = h_tol
 
-    def train(self, model, X, W, graph_thres, max_iter, iter_step, output_dir):
+    def train(self, model, X, W_true, graph_thres, max_iter, iter_step, output_dir):
         """
         model object should contain the several class member:
         - sess
@@ -35,14 +35,11 @@ class ALTrainer(object):
         - alpha
         - lr
         """
-        # To save the raw recovered graph in each iteration
-        create_dir('{}/raw_recovered_graph'.format(output_dir))
-
         model.sess.run(tf.compat.v1.global_variables_initializer())
         rho, alpha, h, h_new = self.init_rho, 0.0, np.inf, np.inf
 
         self._logger.info('Started training for {} iterations'.format(max_iter))
-        for i in range(1, max_iter + 1):
+        for epoch in range(1, max_iter + 1):
             while rho < self.rho_thres:
                 self._logger.info('rho {:.3E}, alpha {:.3E}'.format(rho, alpha))
                 loss_new, mse_new, h_new, W_new = self.train_step(model, iter_step, X, rho, alpha)
@@ -51,16 +48,9 @@ class ALTrainer(object):
                 else:
                     break
 
-            # Evaluate the learned W in each iteration after thresholding
-            W_thresholded = np.copy(W_new)
-            W_thresholded[np.abs(W_thresholded) < graph_thres] = 0
-            results_thresholded = count_accuracy(W, W_thresholded)
-
-            self._logger.info('[Iter {}] loss {:.3E}, mse {:.3E}, acyclic {:.3E}, shd {}, tpr {:.3f}, fdr {:.3f}, pred_size {}'.format(i, loss_new, mse_new, h_new, results_thresholded['shd'], results_thresholded['tpr'], results_thresholded['fdr'], results_thresholded['pred_size']))
-
+            self.train_callback(epoch, loss_new, mse_new, h_new, W_true, W_new, graph_thres, output_dir)
             W_est, h = W_new, h_new
             alpha += rho * h
-            np.save('{}/raw_recovered_graph/graph_iteration_{}.npy'.format(output_dir, i), W_est)
 
             if h <= self.h_tol and i > self.init_iter:
                 self._logger.info('Early stopping at {}-th iteration'.format(i))
@@ -83,3 +73,20 @@ class ALTrainer(object):
                                             model.lr: self.learning_rate})
 
         return curr_loss, curr_mse, curr_h, curr_W
+
+    def train_callback(self, epoch, loss, mse, h, W_true, W_est, graph_thres, output_dir):
+        # To save the raw recovered graph in each iteration
+        create_dir('{}/raw_recovered_graph'.format(output_dir))
+
+        # Evaluate the learned W in each iteration after thresholding
+        W_thresholded = np.copy(W_est)
+        W_thresholded[np.abs(W_thresholded) < graph_thres] = 0
+        results_thresholded = count_accuracy(W_true, W_thresholded)
+
+        self._logger.info(
+            '[Iter {}] loss {:.3E}, mse {:.3E}, acyclic {:.3E}, shd {}, tpr {:.3f}, fdr {:.3f}, pred_size {}'.format(
+                epoch, loss, mse, h, results_thresholded['shd'], results_thresholded['tpr'],
+                results_thresholded['fdr'], results_thresholded['pred_size']
+            )
+        )
+        np.save('{}/raw_recovered_graph/graph_iteration_{}.npy'.format(output_dir, epoch), W_est)
