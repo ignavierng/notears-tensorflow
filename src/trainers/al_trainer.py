@@ -75,9 +75,6 @@ class ALTrainer(object):
         return curr_loss, curr_mse, curr_h, curr_W
 
     def train_callback(self, epoch, loss, mse, h, W_true, W_est, graph_thres, output_dir):
-        # To save the raw recovered graph in each iteration
-        create_dir('{}/raw_recovered_graph'.format(output_dir))
-
         # Evaluate the learned W in each iteration after thresholding
         W_thresholded = np.copy(W_est)
         W_thresholded[np.abs(W_thresholded) < graph_thres] = 0
@@ -89,4 +86,7 @@ class ALTrainer(object):
                 results_thresholded['fdr'], results_thresholded['pred_size']
             )
         )
-        np.save('{}/raw_recovered_graph/graph_iteration_{}.npy'.format(output_dir, epoch), W_est)
+
+        # Save the raw estimated graph in each iteration
+        create_dir('{}/raw_estimated_graph'.format(output_dir))
+        np.save('{}/raw_estimated_graph/graph_iteration_{}.npy'.format(output_dir, epoch), W_est)

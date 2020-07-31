@@ -11,7 +11,7 @@ from helpers.config_utils import save_yaml_config, get_args
 from helpers.log_helper import LogHelper
 from helpers.tf_utils import set_seed
 from helpers.dir_utils import create_dir
-from helpers.analyze_utils import count_accuracy, plot_recovered_graph
+from helpers.analyze_utils import count_accuracy, plot_estimated_graph
 
 
 # For logging of tensorflow messages
@@ -48,20 +48,20 @@ def main():
                           args.max_iter, args.iter_step, output_dir)
     _logger.info('Finished training model')
 
-    # Save raw recovered graph, ground truth and observational data after training
+    # Save raw estimated graph, ground truth and observational data after training
     np.save('{}/true_graph.npy'.format(output_dir), dataset.W)
     np.save('{}/X.npy'.format(output_dir), dataset.X)
-    np.save('{}/final_raw_recovered_graph.npy'.format(output_dir), W_est)
+    np.save('{}/final_raw_estimated_graph.npy'.format(output_dir), W_est)
 
-    # Plot raw recovered graph
-    plot_recovered_graph(W_est, dataset.W,
-                         save_name='{}/raw_recovered_graph.png'.format(output_dir))
+    # Plot raw estimated graph
+    plot_estimated_graph(W_est, dataset.W,
+                         save_name='{}/raw_estimated_graph.png'.format(output_dir))
 
     _logger.info('Thresholding.')
-    # Plot thresholded recovered graph
+    # Plot thresholded estimated graph
     W_est[np.abs(W_est) < args.graph_thres] = 0    # Thresholding
-    plot_recovered_graph(W_est, dataset.W,
-                         save_name='{}/thresholded_recovered_graph.png'.format(output_dir))
+    plot_estimated_graph(W_est, dataset.W,
+                         save_name='{}/thresholded_estimated_graph.png'.format(output_dir))
     results_thresholded = count_accuracy(dataset.W, W_est)
     _logger.info('Results after thresholding by {}: {}'.format(args.graph_thres, results_thresholded))
 

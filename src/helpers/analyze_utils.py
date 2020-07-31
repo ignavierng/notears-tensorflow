@@ -71,12 +71,12 @@ def count_accuracy(W_true, W_est, W_und=None):
     }
 
 
-def plot_recovered_graph(W_est, W, save_name=None):
+def plot_estimated_graph(W_est, W, save_name=None):
     fig, (ax1, ax2) = plt.subplots(figsize=(8, 3), ncols=2)
 
     # plot just the positive data and save the
     # color "mappable" object returned by ax1.imshow
-    ax1.set_title('recovered_graph')
+    ax1.set_title('estimated_graph')
     map1 = ax1.imshow(W_est, cmap='Greys', interpolation='none')
 
     # add the colorbar using the figure's method,
