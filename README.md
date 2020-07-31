@@ -14,12 +14,10 @@ To run `NoTears`, for example, run:
 ```
 python main.py  --seed 1230 \
                 --d 20 \
-                --n 3000 \
-                --degree 3 \
-                --dataset_type linear \
+                --n 1000 \
+                --degree 4 \
                 --graph_thres 0.3 \
-                --l1_graph_penalty 0.0 \
-                --max_iter 20
+                --l1_graph_penalty 0.1
 ```
 
 ### Remark

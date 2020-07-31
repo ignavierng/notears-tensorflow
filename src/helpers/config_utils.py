@@ -34,7 +34,7 @@ def get_args():
     ##### Dataset settings #####
     parser.add_argument('--n',
                         type=int,
-                        default=3000,
+                        default=1000,
                         help='Number of observation data')
 
     parser.add_argument('--d',
@@ -49,7 +49,7 @@ def get_args():
 
     parser.add_argument('--degree',
                         type=int,
-                        default=3,
+                        default=4,
                         help='Degree of graph')
 
     parser.add_argument('--sem_type',
@@ -86,12 +86,12 @@ def get_args():
 
     parser.add_argument('--max_iter',
                         type=int,
-                        default=10,
+                        default=20,
                         help='Number of iterations for optimization problem')
 
     parser.add_argument('--iter_step',
                         type=int,
-                        default=1000,
+                        default=1500,
                         help='Number of steps for each iteration')
 
     parser.add_argument('--init_iter',
