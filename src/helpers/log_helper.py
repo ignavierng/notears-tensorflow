@@ -21,7 +21,7 @@ class LogHelper(object):
 
         def customTime(*args):
             utc_dt = utc.localize(datetime.utcnow())
-            my_tz = timezone("Asia/Hong_Kong")
+            my_tz = timezone('Canada/Central')
             converted = utc_dt.astimezone(my_tz)
             return converted.timetuple()
 
