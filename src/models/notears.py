@@ -28,26 +28,26 @@ class NoTears(object):
     def _init_session(self):
         if self.use_gpu:
             # Use GPU
-            self.sess = tf.Session(config=tf.ConfigProto(
-                gpu_options=tf.GPUOptions(
+            self.sess = tf.compat.v1.Session(config=tf.compat.v1.ConfigProto(
+                gpu_options=tf.compat.v1.GPUOptions(
                     per_process_gpu_memory_fraction=0.5,
                     allow_growth=True,
                 )
             ))
         else:
-            self.sess = tf.Session()
+            self.sess = tf.compat.v1.Session()
 
     def _init_saver(self):
-        self.saver = tf.train.Saver()
+        self.saver = tf.compat.v1.train.Saver()
 
     def _build(self):
-        tf.reset_default_graph()
+        tf.compat.v1.reset_default_graph()
 
-        self.rho = tf.placeholder(self.tf_float_type)
-        self.alpha = tf.placeholder(self.tf_float_type)
-        self.lr = tf.placeholder(self.tf_float_type)
+        self.rho = tf.compat.v1.placeholder(self.tf_float_type)
+        self.alpha = tf.compat.v1.placeholder(self.tf_float_type)
+        self.lr = tf.compat.v1.placeholder(self.tf_float_type)
 
-        self.X = tf.placeholder(self.tf_float_type, shape=[self.n, self.d])
+        self.X = tf.compat.v1.placeholder(self.tf_float_type, shape=[self.n, self.d])
         W = tf.Variable(tf.zeros([self.d, self.d], self.tf_float_type))
 
         self.W_prime = self._preprocess_graph(W)
@@ -58,12 +58,12 @@ class NoTears(object):
                     + self.l1_graph_penalty * tf.norm(self.W_prime, ord=1) \
                     + self.alpha * self.h + 0.5 * self.rho * self.h * self.h
 
-        self.train_op = tf.train.AdamOptimizer(learning_rate=self.lr).minimize(self.loss)
+        self.train_op = tf.compat.v1.train.AdamOptimizer(learning_rate=self.lr).minimize(self.loss)
         self._logger.debug('Finished building Tensorflow graph')
 
     def _preprocess_graph(self, W):
         # Mask the diagonal entries of graph
-        return tf.matrix_set_diag(W, tf.zeros(W.shape[0], dtype=self.tf_float_type))
+        return tf.linalg.set_diag(W, tf.zeros(W.shape[0], dtype=self.tf_float_type))
 
     def _get_mse_loss(self, X, W_prime):
         X_prime = tf.matmul(X, W_prime)      

@@ -38,7 +38,7 @@ class ALTrainer(object):
         # To save the raw recovered graph in each iteration
         create_dir('{}/raw_recovered_graph'.format(output_dir))
 
-        model.sess.run(tf.global_variables_initializer())
+        model.sess.run(tf.compat.v1.global_variables_initializer())
         rho, alpha, h, h_new = self.init_rho, 0.0, np.inf, np.inf
 
         self._logger.info('Started training for {} iterations'.format(max_iter))

@@ -16,7 +16,7 @@ def set_seed(seed):
     # Reproducibility
     random.seed(seed)
     np.random.seed(seed)
-    tf.set_random_seed(seed)
+    tf.compat.v1.set_random_seed(seed)
     try:
         os.environ['PYTHONHASHSEED'] = str(seed)
     except:
@@ -50,7 +50,7 @@ def print_summary(print_func):
     Referred from:
     - https://github.com/tensorflow/tensorflow/blob/master/tensorflow/contrib/slim/python/slim/model_analyzer.py
     """
-    variables = tf.trainable_variables()
+    variables = tf.compat.v1.trainable_variables()
 
     print_func('Model summary:')
     print_func('---------')
