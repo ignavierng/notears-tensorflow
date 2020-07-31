@@ -52,8 +52,8 @@ class ALTrainer(object):
             W_est, h = W_new, h_new
             alpha += rho * h
 
-            if h <= self.h_tol and i > self.init_iter:
-                self._logger.info('Early stopping at {}-th iteration'.format(i))
+            if h <= self.h_tol and epoch > self.init_iter:
+                self._logger.info('Early stopping at {}-th iteration'.format(epoch))
                 break
 
         # Save model
