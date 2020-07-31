@@ -1,3 +1,4 @@
+import os
 import logging
 from pytz import timezone
 from datetime import datetime
@@ -11,6 +12,10 @@ from helpers.log_helper import LogHelper
 from helpers.tf_utils import set_seed
 from helpers.dir_utils import create_dir
 from helpers.analyze_utils import count_accuracy, plot_recovered_graph
+
+
+# For logging of tensorflow messages
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 
 def main():
