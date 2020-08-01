@@ -68,7 +68,7 @@ def get_args():
                         help='Type of dataset [only linear is implemented]')
 
     ##### Model settings #####
-    parser.add_argument('--l1_graph_penalty',
+    parser.add_argument('--l1_lambda',
                         type=float,
                         default=0.0,
                         help='L1 penalty for sparse graph. Set to 0 to disable')

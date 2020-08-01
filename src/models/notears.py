@@ -8,14 +8,14 @@ from helpers.tf_utils import print_summary
 class NoTears(object):
     _logger = logging.getLogger(__name__)
 
-    def __init__(self, use_gpu, n, d, seed=8, l1_graph_penalty=0, use_float64=False):
+    def __init__(self, use_gpu, n, d, seed=8, l1_lambda=0, use_float64=False):
         self.print_summary = print_summary    # Print summary for tensorflow variables
 
         self.use_gpu = use_gpu
         self.n = n
         self.d = d
         self.seed = seed
-        self.l1_graph_penalty = l1_graph_penalty
+        self.l1_lambda = l1_lambda
         self.tf_float_type = tf.dtypes.float64 if use_float64 else tf.dtypes.float32        
 
         # Initializer (for reproducibility)
@@ -55,7 +55,7 @@ class NoTears(object):
 
         self.h = tf.linalg.trace(tf.linalg.expm(self.W_prime * self.W_prime)) - self.d    # Acyclicity
         self.loss = 0.5 / self.n * self.mse_loss \
-                    + self.l1_graph_penalty * tf.norm(self.W_prime, ord=1) \
+                    + self.l1_lambda * tf.norm(self.W_prime, ord=1) \
                     + self.alpha * self.h + 0.5 * self.rho * self.h * self.h
 
         self.train_op = tf.compat.v1.train.AdamOptimizer(learning_rate=self.lr).minimize(self.loss)

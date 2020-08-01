@@ -17,7 +17,7 @@ python main.py  --seed 1230 \
                 --n 1000 \
                 --degree 4 \
                 --graph_thres 0.3 \
-                --l1_graph_penalty 0.1
+                --l1_lambda 0.1
 ```
 
 ### Remark
