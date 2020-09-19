@@ -8,10 +8,9 @@ from helpers.tf_utils import print_summary
 class NoTears(object):
     _logger = logging.getLogger(__name__)
 
-    def __init__(self, use_gpu, n, d, seed=8, l1_lambda=0, use_float64=False):
+    def __init__(self, n, d, seed=8, l1_lambda=0, use_float64=False):
         self.print_summary = print_summary    # Print summary for tensorflow variables
 
-        self.use_gpu = use_gpu
         self.n = n
         self.d = d
         self.seed = seed
@@ -26,16 +25,12 @@ class NoTears(object):
         self._init_saver()
 
     def _init_session(self):
-        if self.use_gpu:
-            # Use GPU
-            self.sess = tf.compat.v1.Session(config=tf.compat.v1.ConfigProto(
-                gpu_options=tf.compat.v1.GPUOptions(
-                    per_process_gpu_memory_fraction=0.5,
-                    allow_growth=True,
-                )
-            ))
-        else:
-            self.sess = tf.compat.v1.Session()
+        self.sess = tf.compat.v1.Session(config=tf.compat.v1.ConfigProto(
+            gpu_options=tf.compat.v1.GPUOptions(
+                per_process_gpu_memory_fraction=0.5,
+                allow_growth=True,
+            )
+        ))
 
     def _init_saver(self):
         self.saver = tf.compat.v1.train.Saver()
