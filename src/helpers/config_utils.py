@@ -106,7 +106,7 @@ def get_args():
 
     parser.add_argument('--rho_max',
                         type=float,
-                        default=1e+12,
+                        default=1e+16,
                         help='Maximum value of rho')
 
     parser.add_argument('--h_factor',
