@@ -102,17 +102,17 @@ def get_args():
     parser.add_argument('--init_rho',
                         type=float,
                         default=1.0,
-                        help='Initial value for rho')
+                        help='Initial value of rho')
 
-    parser.add_argument('--rho_thres',
+    parser.add_argument('--rho_max',
                         type=float,
                         default=1e+12,
-                        help='Threshold for rho')
+                        help='Maximum value of rho')
 
-    parser.add_argument('--h_thres',
+    parser.add_argument('--h_factor',
                         type=float,
                         default=0.25,
-                        help='Threshold for h')
+                        help='Factor of h')
 
     parser.add_argument('--rho_multiply',
                         type=float,

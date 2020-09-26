@@ -42,7 +42,7 @@ def main():
     model = NoTears(args.n, args.d, args.seed, args.l1_lambda, args.use_float64)
     model.print_summary(print_func=model.logger.info)
 
-    trainer = ALTrainer(args.init_rho, args.rho_thres, args.h_thres, args.rho_multiply,
+    trainer = ALTrainer(args.init_rho, args.rho_max, args.h_factor, args.rho_multiply,
                         args.init_iter, args.learning_rate, args.h_tol)
     W_est = trainer.train(model, dataset.X, dataset.W, args.graph_thres,
                           args.max_iter, args.iter_step, output_dir)

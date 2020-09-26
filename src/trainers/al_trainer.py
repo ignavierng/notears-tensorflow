@@ -12,10 +12,10 @@ class ALTrainer(object):
     """
     _logger = logging.getLogger(__name__)
 
-    def __init__(self, init_rho, rho_thres, h_thres, rho_multiply, init_iter, learning_rate, h_tol):
+    def __init__(self, init_rho, rho_max, h_factor, rho_multiply, init_iter, learning_rate, h_tol):
         self.init_rho = init_rho
-        self.rho_thres = rho_thres
-        self.h_thres = h_thres
+        self.rho_max = rho_max
+        self.h_factor = h_factor
         self.rho_multiply = rho_multiply
         self.init_iter = init_iter
         self.learning_rate = learning_rate
@@ -40,10 +40,10 @@ class ALTrainer(object):
 
         self._logger.info('Started training for {} iterations'.format(max_iter))
         for epoch in range(1, max_iter + 1):
-            while rho < self.rho_thres:
+            while rho < self.rho_max:
                 self._logger.info('rho {:.3E}, alpha {:.3E}'.format(rho, alpha))
                 loss_new, mse_new, h_new, W_new = self.train_step(model, iter_step, X, rho, alpha)
-                if h_new > self.h_thres * h:
+                if h_new > self.h_factor * h:
                     rho *= self.rho_multiply
                 else:
                     break
